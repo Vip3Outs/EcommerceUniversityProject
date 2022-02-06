@@ -111,7 +111,7 @@ function ProductScreen({ match, history }) {
                 <ListGroup.Item>Price: {product.price}PLN</ListGroup.Item>
 
                 <ListGroup.Item>
-                  Description: {product.description}
+                  {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>

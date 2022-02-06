@@ -1,29 +1,21 @@
-# Django Import 
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 
-# Rest Framework Import
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.permissions import IsAuthenticated,IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 
-# Rest Framework JWT 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-# Local Import 
 from api.models import *
 from api.serializers import UserSerializer,UserSerializerWithToken
 
 
-
-
-
-# JWT Views
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -40,8 +32,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         # Add custom claims
         token['username'] = user.username
-        token['message'] = "Hello Proshop"
-        # ...
+        token['message'] = "Hello"
 
         return token
 
@@ -49,7 +40,6 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-# SHOP API
 @api_view(['GET'])
 def getRoutes(request):
     routes =[

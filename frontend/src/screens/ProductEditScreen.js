@@ -166,7 +166,7 @@ function ProductEditScreen({ match, history }) {
 
               <Form.File
                 id="image-file"
-                label="Choose File"
+                label=""
                 custom
                 onChange={uploadFileHandler}
               />

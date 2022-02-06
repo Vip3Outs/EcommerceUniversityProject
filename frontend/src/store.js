@@ -1,11 +1,9 @@
-/* REDUX */
 import { createStore, combineReducers, applyMiddleware } from "redux";
 
 import thunk from "redux-thunk";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 
-/* IMPORTING REDUCERS */
 import {
   productListReducer,
   productDetailsReducer,
@@ -37,7 +35,6 @@ import {
   orderDeliverReducer,
 } from "./reducers/orderReducers";
 
-/* COMBINED REDUCER */
 const reducer = combineReducers({
   cart: cartReducer,
 
@@ -65,7 +62,6 @@ const reducer = combineReducers({
   orderDeliver: orderDeliverReducer,
 });
 
-/* PULLING DATA OUT OF LOCAL STORAGE AND LOAD IT INTO INITIAL STATE */
 const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
@@ -78,7 +74,6 @@ const shippingAddressFromStorage = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress"))
   : {};
 
-/* INITIAL STATE */
 const initialState = {
   cart: {
     cartItems: cartItemsFromStorage,
@@ -91,7 +86,6 @@ const initialState = {
 
 const middleware = [thunk];
 
-/* REDUX STORE */
 const store = createStore(
   reducer,
   initialState,

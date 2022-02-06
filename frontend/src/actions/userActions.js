@@ -197,7 +197,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     };
 
     // USING ${id} BECAUSE WHILE ACCESSING NORMAL USER WE'LL PASS STRING 'profile' BUT WHILE ACCESSING ADMIN PANEL WE'LL PASS THE 'id' SO LINK HAS TO BE DYNAMIC
-    const { data } = await axios.put(`/api/users/profile/update`, user, config);
+    const { data } = await axios.put(`/api/users/profile/update/`, user, config);
 
     /* IF PUT REQUEST SUCCESSFULL WE DISPATCH & SEND THE PAYLOAD TO OUR REDUCER */
     dispatch({

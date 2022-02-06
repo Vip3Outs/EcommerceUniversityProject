@@ -32,7 +32,7 @@ function Header() {
 
   return (
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar variant="default" expand="lg" bg="info" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>
