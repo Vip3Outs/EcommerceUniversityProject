@@ -12,7 +12,26 @@ from rest_framework.serializers import Serializer
 from api.models import *
 from api.serializers import ProductSerializer, OrderSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
+@swagger_auto_schema(method='post', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'orderItems': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'paymentMethod': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'taxPrice': openapi.Schema(type=openapi.TYPE_NUMBER, description=0),
+        'shippingPrice': openapi.Schema(type=openapi.TYPE_NUMBER, description=0),
+        'totalPrice': openapi.Schema(type=openapi.TYPE_NUMBER, description=0),
+        'shippingAddress': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'city': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'postalCode': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'country': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'product': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'qty': openapi.Schema(type=openapi.TYPE_INTEGER, description=0),
+        'price': openapi.Schema(type=openapi.TYPE_INTEGER, description=0),
+    }
+))
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addOrderItems(request):
@@ -92,6 +111,7 @@ def getOrderById(request, pk):
                      status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response({'detail': 'Order does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(['PUT'])

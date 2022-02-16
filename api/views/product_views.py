@@ -12,6 +12,9 @@ from rest_framework.serializers import Serializer
 from api.models import *
 from api.serializers import ProductSerializer
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 @api_view(['GET'])
 def getProducts(request):
     query = request.query_params.get('keyword')
@@ -37,6 +40,7 @@ def getProducts(request):
     serializer = ProductSerializer(products, many=True)
     return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
+
 @api_view(['GET'])
 def getTopProducts(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
@@ -54,13 +58,12 @@ def getProduct(request, pk):
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
 def createProduct(request):
-
     user = request.user
     product = Product.objects.create(
         user=user,
-        name=" Product Name ",
+        name="Product Name",
         price=0,
-        brand="Sample brand ",
+        brand="Sample brand",
         countInStock=0,
         category="Sample category",
         description=""
@@ -69,7 +72,17 @@ def createProduct(request):
     serializer = ProductSerializer(product, many=False)
     return Response(serializer.data)
 
-
+@swagger_auto_schema(method='put', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'price': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'brand': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'countInStock': openapi.Schema(type=openapi.TYPE_INTEGER, description='int'),
+        'category': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'description': openapi.Schema(type=openapi.TYPE_STRING, description='string')
+    }
+))
 @api_view(['PUT'])
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
@@ -107,6 +120,13 @@ def uploadImage(request):
     return Response("Image was uploaded")
 
 
+@swagger_auto_schema(method='post', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'rating': openapi.Schema(type=openapi.TYPE_STRING, description='1-5'),
+        'comment': openapi.Schema(type=openapi.TYPE_STRING, description='string')
+    }
+))
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createProductReview(request, pk):

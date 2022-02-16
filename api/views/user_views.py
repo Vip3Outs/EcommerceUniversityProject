@@ -12,9 +12,11 @@ from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 from api.models import *
 from api.serializers import UserSerializer,UserSerializerWithToken
-
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -53,6 +55,14 @@ def getRoutes(request):
     return Response(routes)
 
 
+@swagger_auto_schema(method='post', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'email': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+    }
+))
 @api_view(['POST'])
 def registerUser(request):
     data = request.data
@@ -61,6 +71,7 @@ def registerUser(request):
             first_name = data['name'],
             username = data['email'],
             password = make_password(data['password']),
+            email = data['email'],
         )
 
         serializer = UserSerializerWithToken(user,many=False)
@@ -79,6 +90,14 @@ def getUserProfile(request):
     return Response(serializer.data)
 
 
+@swagger_auto_schema(method='put', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'password': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'email': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+    }
+))
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
@@ -101,6 +120,7 @@ def getUsers(request):
     serializer = UserSerializer(users,many = True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getUserById(request,pk):
@@ -109,7 +129,14 @@ def getUserById(request,pk):
     return Response(serializer.data)
 
 
-
+@swagger_auto_schema(method='put', request_body=openapi.Schema(
+    type=openapi.TYPE_OBJECT, 
+    properties={
+        'name': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'email': openapi.Schema(type=openapi.TYPE_STRING, description='string'),
+        'isAdmin': openapi.Schema(type=openapi.TYPE_STRING, description='0/1'),
+    }
+))
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def updateUser(request,pk):
