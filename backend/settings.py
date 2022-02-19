@@ -45,13 +45,23 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'drf_yasg',
+    'django_extensions',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
       
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )   
+    ),
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'loginAttempts': '6/hr',
+        'user': '1000/day',
+        'anon': '200/day',
+    }   
 }
 
 from datetime import timedelta
@@ -194,4 +204,9 @@ SWAGGER_SETTINGS = {
             'in': 'header'
         }
     }
+}
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
 }

@@ -17,6 +17,7 @@ from drf_yasg import openapi
 
 from api.models import *
 from api.serializers import UserSerializer,UserSerializerWithToken
+from ..prevent import UserLoginRateThrottle
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -39,6 +40,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
 class MyTokenObtainPairView(TokenObtainPairView):
+    throttle_classes = (UserLoginRateThrottle,)
     serializer_class = MyTokenObtainPairSerializer
 
 
